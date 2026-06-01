@@ -5,14 +5,31 @@ go = "1.26"
 run = "go build -o xyrun ./cmd/xyrun"
 
 [tasks.test]
+depends = ["build"]
 run = "go test ./... -count=1 -race -v"
 
+[tasks.coverage]
+description = "Run tests and show coverage statistics"
+depends = ["build"]
+run = """
+  go test ./... -count=1 -coverprofile=coverage.out -covermode=atomic
+  go tool cover -func=coverage.out
+"""
+
+[tasks.test-integration]
+description = "Build binary and run integration tests"
+depends = ["build"]
+run = "go test ./internal/runner/... -tags integration -v -count=1"
+
+
 [tasks.test1]
+depends = ["build"]
 run = """
   echo '{"xy":1, "runner":true}' | ./xyrun echo 1
 """
 
 [tasks.test2]
+depends = ["build"]
 run = """
   echo '{"xy":1, "runner":true}' | ./xyrun bash -c 'exit 2'
 """

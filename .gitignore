@@ -4,3 +4,4 @@ go-xyrun.exe
 xyrun
 !cmd/xyrun
 xyrun.exe
+coverage.out

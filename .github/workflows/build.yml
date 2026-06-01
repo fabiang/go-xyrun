@@ -26,7 +26,24 @@ jobs:
 
       - name: Run tests
         run: |
-          go test ./... -count=1 -race -v
+          go test ./... -count=1 -race -v -coverprofile=coverage.out -covermode=atomic
+
+      - name: Generate coverage report
+        run: go tool cover -html=coverage.out -o coverage.html
+
+      - name: Build binary for integration tests
+        run: go build -o xyrun ./cmd/xyrun
+
+      - name: Run integration tests
+        run: go test ./internal/runner/... -tags integration -v -count=1
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage.out
+            coverage.html
 
   build:
     name: Build ${{ matrix.os }}-${{ matrix.arch }}
@@ -133,7 +150,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: xyrun-${{ matrix.os }}-${{ matrix.arch }}
+          name: xyrun-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
           path: dist/*
 
   release:
