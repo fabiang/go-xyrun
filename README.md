@@ -1,4 +1,4 @@
-# Re-Implemntation of xyrun in Go
+# Re-Implementation of xyrun in Go
 
 This is a re-implementation of [xyrun](https://github.com/pixlcore/xyrun) in Go.
 The idea is to get rid of NodeJS as dependency and provide a single binary that can be used as a drop-in replacement for the original xyrun.
