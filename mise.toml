@@ -1,0 +1,18 @@
+[tools]
+go = "1.26"
+
+[tasks.build]
+run = "go build -o xyrun ./cmd/xyrun"
+
+[tasks.test]
+run = "go test ./... -count=1 -race -v"
+
+[tasks.test1]
+run = """
+  echo '{"xy":1, "runner":true}' | ./xyrun echo 1
+"""
+
+[tasks.test2]
+run = """
+  echo '{"xy":1, "runner":true}' | ./xyrun bash -c 'exit 2'
+"""
